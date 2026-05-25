@@ -18,6 +18,66 @@ ARCHIVOS_DIR = BASE_DIR / "archivos"
 
 GRUPOS = ["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4"]
 
+CSS_TIPOGRAFIA = """
+<style>
+/* Parrafos, listas y celdas */
+[data-testid="stMarkdownContainer"] p,
+[data-testid="stMarkdownContainer"] li {
+    font-size: 1.12rem;
+    line-height: 1.6;
+}
+
+/* Titulos */
+[data-testid="stMarkdownContainer"] h1 { font-size: 2.4rem; }
+[data-testid="stMarkdownContainer"] h2 { font-size: 1.95rem; }
+[data-testid="stMarkdownContainer"] h3 { font-size: 1.55rem; margin-top: 0.6rem; }
+
+/* Captions (incluye "Formato esperado") */
+[data-testid="stCaptionContainer"],
+[data-testid="stCaptionContainer"] p,
+small {
+    font-size: 0.98rem !important;
+}
+
+/* Texto del st.title y st.subheader */
+[data-testid="stHeader"] h1 { font-size: 2.4rem; }
+[data-testid="stSubheader"] h2,
+[data-testid="stSubheader"] h3 { font-size: 1.6rem; }
+
+/* Caja de texto de respuesta */
+[data-testid="stTextInput"] input {
+    font-size: 1.15rem;
+    padding: 0.6rem 0.75rem;
+}
+[data-testid="stTextInput"] label p { font-size: 1.05rem; }
+
+/* Botones */
+.stButton > button,
+[data-testid="stDownloadButton"] > button {
+    font-size: 1.05rem;
+    padding: 0.55rem 1.2rem;
+}
+
+/* Opciones del radio (Paso 0 - Grupo) */
+[data-testid="stRadio"] label p { font-size: 1.1rem; }
+[data-testid="stRadio"] > label p { font-size: 1.05rem; }
+
+/* Mensajes de alerta (success/error/warning/info) */
+[data-testid="stAlert"] p,
+[data-testid="stAlertContainer"] p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+/* Barra de progreso (texto auxiliar) */
+[data-testid="stProgress"] p { font-size: 1rem; }
+</style>
+"""
+
+
+def _inyectar_css() -> None:
+    st.markdown(CSS_TIPOGRAFIA, unsafe_allow_html=True)
+
 
 def _archivo_para(qid: str, grupo: str | None) -> tuple[Path, str, str]:
     """Devuelve (ruta, nombre_descarga, mime) del archivo a entregar."""
@@ -123,6 +183,7 @@ def main() -> None:
         page_icon="🔓",
         layout="centered",
     )
+    _inyectar_css()
     _init_state()
 
     st.title("🔓 Test Inicial")
