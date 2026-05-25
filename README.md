@@ -1,15 +1,19 @@
 # Test Inicial — Hackathon IA Generativa
 
 App **Streamlit** para el reto inicial del hackathon. El usuario selecciona su
-grupo, responde 3 preguntas de opción múltiple, y por cada respuesta correcta
-se desbloquea la descarga de un archivo:
+grupo, responde 3 preguntas **escribiendo la respuesta en una caja de texto**,
+y por cada respuesta correcta se desbloquea la descarga de un archivo:
 
 - **Pregunta 1 correcta** → `archivos/comun_p1.zip` (común a todos los grupos).
 - **Pregunta 2 correcta** → `archivos/grupo{N}_p2.zip` (depende del grupo).
 - **Pregunta 3 correcta** → `archivos/caso_de_negocio.pdf` (común a todos).
 
 > Las respuestas correctas **no** se almacenan en texto plano: sólo se guarda
-> el `SHA-256` del texto exacto de la opción correcta (ver `preguntas.py`).
+> el `SHA-256` del texto **normalizado** de la respuesta correcta (ver
+> `preguntas.py`). La normalización aplica `strip` + `casefold` (minúsculas
+> robustas Unicode) + colapso de espacios internos a un único espacio, así que
+> `"Noviembre 2025"`, `"noviembre 2025"` y `"  NOVIEMBRE  2025 "` se consideran
+> equivalentes; pero `"Nov 2025"` o `"11/2025"` **no** lo son.
 
 ---
 
@@ -77,19 +81,27 @@ archivos reales **manteniendo exactamente los mismos nombres**:
 
 Si algún archivo falta, la app muestra un `st.warning` y no se cae.
 
-### 2) Cambiar el texto de las opciones (sobre todo Pregunta 1)
+### 2) Cambiar el texto de una pregunta o su respuesta correcta
 
-Los textos `primer/segundo/tercer` de la P1 son provisionales. Para
-reemplazarlos por los valores reales:
+Cada pregunta vive en `preguntas.py` con los campos `enunciado`, `formato`
+(placeholder/ayuda) y `hash_correcto` (SHA-256 del texto normalizado de la
+respuesta correcta).
 
-1. Edita el texto de la opción correcta y los distractores en `preguntas.py`.
-2. **Regenera el hash** de la respuesta correcta:
+Para editar una respuesta:
+
+1. Modifica el `enunciado` y/o `formato` si lo necesitas.
+2. **Regenera el hash** de la respuesta correcta (la utilidad ya aplica la
+   misma normalización que la app):
 
    ```bash
-   python preguntas.py --hash "texto exacto de la respuesta correcta"
+   python preguntas.py --hash "texto de la respuesta correcta"
    ```
 
 3. Pega el hash resultante en el campo `hash_correcto` de esa pregunta.
+
+> Como las respuestas se ingresan por caja de texto, define un `formato` claro
+> (por ejemplo `"Ej.: Enero 2023"`) para que el usuario sepa cómo responder y
+> reduzca errores tipográficos.
 
 ---
 

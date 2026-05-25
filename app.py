@@ -65,23 +65,26 @@ def _render_pregunta(idx: int, pregunta: dict) -> None:
     qid = pregunta["id"]
     st.markdown(f"### Pregunta {idx}")
     st.write(pregunta["enunciado"])
+    formato = pregunta.get("formato", "")
+    if formato:
+        st.caption(f"Formato esperado · {formato}")
 
-    seleccion = st.radio(
-        f"Selecciona una opción (Pregunta {idx})",
-        options=pregunta["opciones"],
-        index=None,
-        key=f"radio_{qid}",
+    respuesta = st.text_input(
+        f"Tu respuesta (Pregunta {idx})",
+        value="",
+        placeholder=formato or "Escribe tu respuesta",
+        key=f"input_{qid}",
         label_visibility="collapsed",
     )
 
-    col1, col2 = st.columns([1, 3])
+    col1, _ = st.columns([1, 3])
     with col1:
         validar = st.button("Validar respuesta", key=f"btn_{qid}")
 
     if validar:
-        if seleccion is None:
-            st.warning("Selecciona una opción antes de validar.")
-        elif verificar(qid, seleccion):
+        if not respuesta or not respuesta.strip():
+            st.warning("Escribe una respuesta antes de validar.")
+        elif verificar(qid, respuesta):
             st.session_state.ok[qid] = True
             st.success("✅ ¡Respuesta correcta! Archivo desbloqueado.")
         else:
@@ -97,7 +100,7 @@ def _reiniciar_progreso() -> None:
     st.session_state.grupo_confirmado = False
     st.session_state.ok = {"q1": False, "q2": False, "q3": False}
     for qid in ("q1", "q2", "q3"):
-        st.session_state.pop(f"radio_{qid}", None)
+        st.session_state.pop(f"input_{qid}", None)
 
 
 def main() -> None:
