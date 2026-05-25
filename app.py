@@ -140,16 +140,6 @@ def _inyectar_css() -> None:
     st.markdown(CSS_TIPOGRAFIA, unsafe_allow_html=True)
 
 
-def _render_logo() -> None:
-    """Muestra el logo Tech Champions centrado, ~50% del ancho."""
-    logo = BASE_DIR / "assets" / "logo_tech_champions.png"
-    if not logo.exists():
-        return
-    _, col_c, _ = st.columns([1, 2, 1])
-    with col_c:
-        st.image(str(logo), use_container_width=True)
-
-
 def _archivo_para(qid: str, grupo: str | None) -> tuple[Path, str, str]:
     """Devuelve (ruta, nombre_descarga, mime) del archivo a entregar."""
     if qid == "q1":
@@ -260,7 +250,6 @@ def main() -> None:
     st.title("🔓 Test Inicial")
     st.caption("Hackathon IA Generativa")
     st.divider()
-    _render_logo()
 
     if not st.session_state.grupo_confirmado:
         st.subheader("Paso 0 · Selecciona tu grupo")
