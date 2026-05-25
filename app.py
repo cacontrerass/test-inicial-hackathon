@@ -20,6 +20,14 @@ GRUPOS = ["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4"]
 
 CSS_TIPOGRAFIA = """
 <style>
+:root {
+    --btn-azul: #1F6FEB;
+    --btn-azul-hover: #1B5FCC;
+    --btn-azul-active: #1750A8;
+    --input-bg: #F1F3F6;
+    --input-bg-focus: #E9ECF1;
+}
+
 /* Parrafos, listas y celdas */
 [data-testid="stMarkdownContainer"] p,
 [data-testid="stMarkdownContainer"] li {
@@ -44,18 +52,61 @@ small {
 [data-testid="stSubheader"] h2,
 [data-testid="stSubheader"] h3 { font-size: 1.6rem; }
 
-/* Caja de texto de respuesta */
-[data-testid="stTextInput"] input {
+/* Caja de texto de respuesta - fondo gris claro para contraste */
+[data-testid="stTextInput"] input,
+[data-testid="stTextInput"] > div > div > input,
+[data-baseweb="input"] input {
+    background-color: var(--input-bg) !important;
     font-size: 1.15rem;
     padding: 0.6rem 0.75rem;
+    color: #1A1A1A;
+}
+[data-testid="stTextInput"] > div > div,
+[data-baseweb="input"] {
+    background-color: var(--input-bg) !important;
+    border-color: #D0D5DD !important;
+}
+[data-testid="stTextInput"] > div > div:focus-within,
+[data-baseweb="input"]:focus-within {
+    background-color: var(--input-bg-focus) !important;
 }
 [data-testid="stTextInput"] label p { font-size: 1.05rem; }
 
-/* Botones */
+/* Botones - azul corporativo con texto blanco */
 .stButton > button,
-[data-testid="stDownloadButton"] > button {
+[data-testid="stDownloadButton"] > button,
+[data-testid="baseButton-primary"],
+[data-testid="baseButton-secondary"] {
     font-size: 1.05rem;
     padding: 0.55rem 1.2rem;
+    background-color: var(--btn-azul) !important;
+    color: #FFFFFF !important;
+    border: 1px solid var(--btn-azul) !important;
+    font-weight: 500;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+.stButton > button:hover,
+[data-testid="stDownloadButton"] > button:hover,
+[data-testid="baseButton-primary"]:hover,
+[data-testid="baseButton-secondary"]:hover {
+    background-color: var(--btn-azul-hover) !important;
+    border-color: var(--btn-azul-hover) !important;
+    color: #FFFFFF !important;
+}
+.stButton > button:active,
+[data-testid="stDownloadButton"] > button:active,
+[data-testid="baseButton-primary"]:active,
+[data-testid="baseButton-secondary"]:active,
+.stButton > button:focus:not(:active),
+[data-testid="stDownloadButton"] > button:focus:not(:active) {
+    background-color: var(--btn-azul-active) !important;
+    border-color: var(--btn-azul-active) !important;
+    color: #FFFFFF !important;
+    box-shadow: none !important;
+}
+.stButton > button p,
+[data-testid="stDownloadButton"] > button p {
+    color: #FFFFFF !important;
 }
 
 /* Opciones del radio (Paso 0 - Grupo) */
