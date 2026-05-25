@@ -84,6 +84,35 @@ PREGUNTAS: list[Pregunta] = [
 ]
 
 
+# Pregunta extra "Hack" para revelar las claves de los demas grupos.
+# Se mantiene FUERA de PREGUNTAS para que no se renderice en el loop
+# principal del Test Inicial; tiene su propia seccion al final.
+PREGUNTA_HACK: Pregunta = {
+    "id": "qhack",
+    "enunciado": (
+        "Variación del segmento de mercado de la industria para el modelo "
+        "**EV5** en **MTD(30.04.2026) vs Last Month**.\n\n"
+        "**Criterios del segmento de mercado EV5:**\n"
+        "- Segmento: Suv\n"
+        "- Sub_Segmento: Crossover\n"
+        "- Objetivo: Medio\n"
+        "- Tamaño: C\n"
+        "- Energetico: Electrico"
+    ),
+    "formato": "Ej.: 12% (incluir el signo de porcentaje)",
+    "hash_correcto": (
+        "348ffdae32ae1a8b6718bbb7fad65251e3dbc567060af1edb95264f20cb5275f"
+    ),
+}
+
+
+def verificar_hack(texto_respuesta: str | None) -> bool:
+    """True si la respuesta del Hack coincide (por hash) con la correcta."""
+    if texto_respuesta is None or not texto_respuesta.strip():
+        return False
+    return _h(texto_respuesta) == PREGUNTA_HACK["hash_correcto"]
+
+
 def get_pregunta(qid: str) -> Pregunta:
     """Obtiene una pregunta por su id; lanza KeyError si no existe."""
     for p in PREGUNTAS:

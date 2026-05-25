@@ -44,6 +44,27 @@ def verificar_clave(grupo: str | None, clave: str | None) -> bool:
     return _h(clave) == esperado
 
 
+def descifrar_claves(num_digitos: int = 3) -> dict[str, str]:
+    """Recupera las claves de cada grupo via brute-force contra los hashes.
+
+    Solo se llama cuando el usuario gana el ejercicio Hack. Mantiene las
+    claves fuera del codigo fuente: se reconstruyen al vuelo iterando
+    todas las combinaciones de `num_digitos` digitos.
+    """
+    if num_digitos < 1 or num_digitos > 6:
+        raise ValueError("num_digitos debe estar entre 1 y 6")
+    hash_a_grupo = {h: g for g, h in _CLAVES_HASH.items()}
+    descifradas: dict[str, str] = {}
+    for n in range(10**num_digitos):
+        candidato = str(n).zfill(num_digitos)
+        h = _h(candidato)
+        if h in hash_a_grupo:
+            descifradas[hash_a_grupo[h]] = candidato
+            if len(descifradas) == len(_CLAVES_HASH):
+                break
+    return {g: descifradas[g] for g in GRUPOS if g in descifradas}
+
+
 def _cli() -> None:
     parser = argparse.ArgumentParser(
         description=(

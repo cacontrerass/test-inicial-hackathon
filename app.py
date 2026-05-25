@@ -11,8 +11,8 @@ from pathlib import Path
 
 import streamlit as st
 
-from grupos import GRUPOS, verificar_clave
-from preguntas import PREGUNTAS, verificar
+from grupos import GRUPOS, descifrar_claves, verificar_clave
+from preguntas import PREGUNTA_HACK, PREGUNTAS, verificar, verificar_hack
 
 BASE_DIR = Path(__file__).parent
 ARCHIVOS_DIR = BASE_DIR / "archivos"
@@ -118,6 +118,34 @@ button[kind="secondary"]:active,
     color: #FFFFFF !important;
 }
 
+/* Boton "Hack[Descubrir contraseñas]" - estilo gris.
+   Streamlit 1.36+ inyecta la clase .st-key-<key> en el contenedor
+   del widget cuando se pasa el parametro key. Sobrescribe los azules
+   por ser mas especifico y aparecer despues en el bloque. */
+.st-key-btn_hack button,
+.st-key-btn_hack [data-testid="stButton"] button,
+div.st-key-btn_hack button[kind="primary"],
+div.st-key-btn_hack button[kind="secondary"] {
+    background-color: #B5B5B5 !important;
+    color: #3F3F3F !important;
+    border-color: #B5B5B5 !important;
+}
+.st-key-btn_hack button:hover,
+.st-key-btn_hack [data-testid="stButton"] button:hover {
+    background-color: #9C9C9C !important;
+    border-color: #9C9C9C !important;
+    color: #1F1F1F !important;
+}
+.st-key-btn_hack button:active,
+.st-key-btn_hack button:focus:not(:active) {
+    background-color: #828282 !important;
+    border-color: #828282 !important;
+    color: #1F1F1F !important;
+}
+.st-key-btn_hack button p {
+    color: inherit !important;
+}
+
 /* Opciones del radio (Paso 0 - Grupo) */
 [data-testid="stRadio"] label p { font-size: 1.1rem; }
 [data-testid="stRadio"] > label p { font-size: 1.05rem; }
@@ -164,6 +192,8 @@ def _init_state() -> None:
     st.session_state.setdefault("grupo", None)
     st.session_state.setdefault("grupo_confirmado", False)
     st.session_state.setdefault("ok", {"q1": False, "q2": False, "q3": False})
+    st.session_state.setdefault("hack_revealed", False)
+    st.session_state.setdefault("hack_ok", False)
 
 
 def _render_boton_descarga(qid: str) -> None:
@@ -233,14 +263,77 @@ def _render_pregunta(idx: int, pregunta: dict) -> None:
         _render_boton_descarga(qid)
 
 
+def _render_hack() -> None:
+    """Boton + ejercicio Hack para revelar claves de los demas grupos."""
+    st.markdown("### 🛠️ Bonus")
+    if st.button(
+        "Hack[Descubrir contraseñas]",
+        key="btn_hack",
+        help="Ejercicio adicional para obtener las claves de los demas grupos.",
+    ):
+        st.session_state.hack_revealed = True
+
+    if not st.session_state.hack_revealed:
+        return
+
+    st.markdown("---")
+    st.info(
+        "*Si resuelves el siguiente ejercicio, obtendrás las contraseñas "
+        "de los demás equipos. Con esto podrás descargar todos los "
+        "archivos del modelo de datos.*"
+    )
+
+    st.markdown("#### Hack")
+    st.markdown(PREGUNTA_HACK["enunciado"])
+
+    formato = PREGUNTA_HACK.get("formato", "")
+    if formato:
+        st.caption(f"Formato esperado · {formato}")
+
+    respuesta = st.text_input(
+        "Tu respuesta (Hack)",
+        value="",
+        placeholder=formato or "Escribe tu respuesta",
+        key="input_qhack",
+        label_visibility="collapsed",
+    )
+
+    col1, _ = st.columns([1, 3])
+    with col1:
+        validar = st.button("Validar respuesta", key="btn_qhack")
+
+    if validar:
+        if not respuesta or not respuesta.strip():
+            st.warning("Escribe una respuesta antes de validar.")
+        elif verificar_hack(respuesta):
+            st.session_state.hack_ok = True
+            st.success("✅ ¡Hack resuelto! Aquí están las claves de los demás grupos.")
+        else:
+            st.session_state.hack_ok = False
+            st.error("❌ Respuesta incorrecta. Inténtalo de nuevo.")
+
+    if st.session_state.hack_ok:
+        claves = descifrar_claves()
+        st.markdown("#### 🔓 Claves reveladas")
+        for grupo, clave in claves.items():
+            st.markdown(f"- **{grupo}** → `{clave}`")
+        st.caption(
+            "Usa el botón **Cambiar grupo** arriba para reingresar con la "
+            "clave de otro grupo y descargar sus archivos."
+        )
+
+
 def _reiniciar_progreso() -> None:
     st.session_state.grupo = None
     st.session_state.grupo_confirmado = False
     st.session_state.ok = {"q1": False, "q2": False, "q3": False}
+    st.session_state.hack_revealed = False
+    st.session_state.hack_ok = False
     for qid in ("q1", "q2", "q3"):
         st.session_state.pop(f"input_{qid}", None)
     st.session_state.pop("input_clave", None)
     st.session_state.pop("radio_grupo", None)
+    st.session_state.pop("input_qhack", None)
 
 
 def main() -> None:
@@ -315,6 +408,9 @@ def main() -> None:
             "🎉 ¡Felicitaciones! Has desbloqueado los 3 archivos. "
             "Ya tienes todo lo necesario para iniciar el caso de negocio."
         )
+
+    st.divider()
+    _render_hack()
 
 
 if __name__ == "__main__":
