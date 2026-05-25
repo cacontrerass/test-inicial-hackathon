@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# Documentos fuente / planificacion - contienen respuestas en texto plano.
+# NO subir al repositorio publico/privado del despliegue.
+PLAN_CURSOR_test_inicial.md
+*.docx
