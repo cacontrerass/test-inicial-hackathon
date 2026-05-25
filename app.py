@@ -164,6 +164,19 @@ div.st-key-btn_hack button[kind="secondary"] {
 
 /* Barra de progreso (texto auxiliar) */
 [data-testid="stProgress"] p { font-size: 1rem; }
+
+/* Hipervinculos clasicos en azul Office (Power BI / SharePoint look) */
+[data-testid="stMarkdownContainer"] a,
+[data-testid="stMarkdownContainer"] a:link,
+[data-testid="stMarkdownContainer"] a:visited {
+    color: #0563C1 !important;
+    text-decoration: underline;
+    font-weight: 500;
+}
+[data-testid="stMarkdownContainer"] a:hover {
+    color: #0349A0 !important;
+    text-decoration: underline;
+}
 </style>
 """
 
@@ -403,6 +416,15 @@ def main() -> None:
     st.progress(resueltas / 3, text=f"Progreso: {resueltas}/3 preguntas correctas")
 
     st.divider()
+    st.markdown(
+        "Para resolver esta prueba tiene las siguientes herramientas a su disposición:\n\n"
+        "- [Reporte Power BI – INDUSTRIA – KIA COL.]"
+        "(https://app.powerbi.com/links/oJzh9Di7rM"
+        "?ctid=91fadfe0-a381-436c-a36d-59d9a69deaf6&pbi_source=linkShare)\n"
+        "- [Bases de datos procesadas – INDUSTRIA COL.]"
+        "(https://metrokiacol-my.sharepoint.com/:f:/g/personal/reporting_kia_com_co"
+        "/IgAOWi7AhmtwS70zawU2w4IGAdXxEMwtCrmzEfHFdlv-nHA?e=JtOVrh)"
+    )
     for i, pregunta in enumerate(PREGUNTAS, start=1):
         _render_pregunta(i, pregunta)
         st.divider()
