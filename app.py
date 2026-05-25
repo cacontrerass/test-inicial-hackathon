@@ -129,6 +129,11 @@ div.st-key-btn_hack button[kind="secondary"] {
     background-color: #B5B5B5 !important;
     color: #3F3F3F !important;
     border-color: #B5B5B5 !important;
+    font-weight: 700 !important;
+}
+.st-key-btn_hack button p,
+.st-key-btn_hack [data-testid="stButton"] button p {
+    font-weight: 700 !important;
 }
 .st-key-btn_hack button:hover,
 .st-key-btn_hack [data-testid="stButton"] button:hover {
