@@ -16,6 +16,7 @@ from preguntas import PREGUNTA_HACK, PREGUNTAS, verificar, verificar_hack
 
 BASE_DIR = Path(__file__).parent
 ARCHIVOS_DIR = BASE_DIR / "archivos"
+LOGO_TECH_CHAMPIONS = BASE_DIR / "Iconos_logos" / "Logo Tech Champions - LETRAS NEGRAS.png"
 
 CSS_TIPOGRAFIA = """
 <style>
@@ -164,6 +165,16 @@ div.st-key-btn_hack button[kind="secondary"] {
 
 /* Barra de progreso (texto auxiliar) */
 [data-testid="stProgress"] p { font-size: 1rem; }
+
+/* Subtitulo "Hackathon IA Generativa" - mas grande, azul, justo bajo el titulo */
+[data-testid="stMarkdownContainer"] p.subtitulo-hackathon {
+    color: var(--btn-azul) !important;
+    font-size: 1.45rem !important;
+    font-weight: 600;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0 !important;
+    line-height: 1.3;
+}
 
 /* Hipervinculos clasicos en azul Office (Power BI / SharePoint look) */
 [data-testid="stMarkdownContainer"] a,
@@ -363,8 +374,16 @@ def main() -> None:
     _inyectar_css()
     _init_state()
 
-    st.title("🔓 Test Inicial")
-    st.caption("Hackathon IA Generativa")
+    col_titulo, col_logo = st.columns([3, 2], vertical_alignment="center")
+    with col_titulo:
+        st.title("🔓 Test Inicial")
+        st.markdown(
+            '<p class="subtitulo-hackathon">Hackathon IA Generativa</p>',
+            unsafe_allow_html=True,
+        )
+    with col_logo:
+        if LOGO_TECH_CHAMPIONS.exists():
+            st.image(str(LOGO_TECH_CHAMPIONS), use_container_width=True)
     st.divider()
 
     if not st.session_state.grupo_confirmado:
