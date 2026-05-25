@@ -9,7 +9,7 @@ cada respuesta correcta se desbloquea la descarga de un archivo:
 
 - **Pregunta 1 correcta** → `archivos/caso_de_negocio.zip` (común a todos los grupos).
 - **Pregunta 2 correcta** → `archivos/{N}_p2.zip` (depende del grupo: `1_p2.zip` a `4_p2.zip`).
-- **Pregunta 3 correcta** → `archivos/mapa_de_archivos.pdf` (común a todos).
+- **Pregunta 3 correcta** → `archivos/{N}_p3.pdf` (depende del grupo: `1_p3.pdf` a `4_p3.pdf`).
 
 > Las respuestas correctas **no** se almacenan en texto plano: sólo se guarda
 > el `SHA-256` del texto **normalizado** de la respuesta correcta (ver
@@ -37,7 +37,10 @@ cada respuesta correcta se desbloquea la descarga de un archivo:
     ├── 2_p2.zip
     ├── 3_p2.zip
     ├── 4_p2.zip
-    └── mapa_de_archivos.pdf
+    ├── 1_p3.pdf
+    ├── 2_p3.pdf
+    ├── 3_p3.pdf
+    └── 4_p3.pdf
 ```
 
 ---
@@ -81,7 +84,7 @@ archivos reales **manteniendo exactamente los mismos nombres**:
 
 - `caso_de_negocio.zip` (P1, común)
 - `1_p2.zip`, `2_p2.zip`, `3_p2.zip`, `4_p2.zip` (P2, uno por grupo)
-- `mapa_de_archivos.pdf` (P3, común)
+- `1_p3.pdf`, `2_p3.pdf`, `3_p3.pdf`, `4_p3.pdf` (P3, uno por grupo)
 
 Si algún archivo falta, la app muestra un `st.warning` y no se cae.
 

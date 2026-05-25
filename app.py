@@ -209,11 +209,9 @@ def _archivo_para(qid: str, grupo: str | None) -> tuple[Path, str, str]:
         nombre = f"{n}_p2.zip"
         return ARCHIVOS_DIR / nombre, nombre, "application/zip"
     if qid == "q3":
-        return (
-            ARCHIVOS_DIR / "mapa_de_archivos.pdf",
-            "mapa_de_archivos.pdf",
-            "application/pdf",
-        )
+        n = re.search(r"\d+", grupo or "").group(0) if grupo else "1"
+        nombre = f"{n}_p3.pdf"
+        return ARCHIVOS_DIR / nombre, nombre, "application/pdf"
     raise ValueError(f"qid desconocido: {qid}")
 
 
