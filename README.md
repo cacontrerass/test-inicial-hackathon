@@ -1,5 +1,7 @@
 # Test Inicial — Hackathon IA Generativa
 
+> **App en producción:** <https://techchampions-test-inicial-hackathon.streamlit.app/>
+
 App **Streamlit** para el reto inicial del hackathon. El usuario selecciona su
 grupo, responde 3 preguntas **escribiendo la respuesta en una caja de texto**,
 y por cada respuesta correcta se desbloquea la descarga de un archivo:
@@ -137,11 +139,13 @@ git push -u origin main
    `https://<tu_usuario>-test-inicial-hackathon.streamlit.app`.
 5. Cada `git push` a `main` redespliega automáticamente.
 
-Pegar aquí la URL final una vez desplegada:
+URL pública desplegada:
 
 ```
-URL pública: <pendiente>
+https://techchampions-test-inicial-hackathon.streamlit.app/
 ```
+
+Cada `git push` a `main` redespliega automáticamente.
 
 ---
 
