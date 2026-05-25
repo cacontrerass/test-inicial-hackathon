@@ -72,11 +72,18 @@ small {
 }
 [data-testid="stTextInput"] label p { font-size: 1.05rem; }
 
-/* Botones - azul corporativo con texto blanco */
-.stButton > button,
-[data-testid="stDownloadButton"] > button,
+/* Botones - azul corporativo con texto blanco.
+   Se usa combinador descendiente (no `>`) porque `help="..."` envuelve
+   el <button> en un tooltip extra que rompia el selector hijo directo. */
+.stButton button,
+[data-testid="stButton"] button,
+[data-testid="stDownloadButton"] button,
 [data-testid="baseButton-primary"],
-[data-testid="baseButton-secondary"] {
+[data-testid="baseButton-secondary"],
+[data-testid="stBaseButton-primary"],
+[data-testid="stBaseButton-secondary"],
+button[kind="primary"],
+button[kind="secondary"] {
     font-size: 1.05rem;
     padding: 0.55rem 1.2rem;
     background-color: var(--btn-azul) !important;
@@ -85,27 +92,30 @@ small {
     font-weight: 500;
     transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
-.stButton > button:hover,
-[data-testid="stDownloadButton"] > button:hover,
-[data-testid="baseButton-primary"]:hover,
-[data-testid="baseButton-secondary"]:hover {
+.stButton button:hover,
+[data-testid="stButton"] button:hover,
+[data-testid="stDownloadButton"] button:hover,
+button[kind="primary"]:hover,
+button[kind="secondary"]:hover {
     background-color: var(--btn-azul-hover) !important;
     border-color: var(--btn-azul-hover) !important;
     color: #FFFFFF !important;
 }
-.stButton > button:active,
-[data-testid="stDownloadButton"] > button:active,
-[data-testid="baseButton-primary"]:active,
-[data-testid="baseButton-secondary"]:active,
-.stButton > button:focus:not(:active),
-[data-testid="stDownloadButton"] > button:focus:not(:active) {
+.stButton button:active,
+[data-testid="stButton"] button:active,
+[data-testid="stDownloadButton"] button:active,
+button[kind="primary"]:active,
+button[kind="secondary"]:active,
+.stButton button:focus:not(:active),
+[data-testid="stDownloadButton"] button:focus:not(:active) {
     background-color: var(--btn-azul-active) !important;
     border-color: var(--btn-azul-active) !important;
     color: #FFFFFF !important;
     box-shadow: none !important;
 }
-.stButton > button p,
-[data-testid="stDownloadButton"] > button p {
+.stButton button p,
+[data-testid="stButton"] button p,
+[data-testid="stDownloadButton"] button p {
     color: #FFFFFF !important;
 }
 
