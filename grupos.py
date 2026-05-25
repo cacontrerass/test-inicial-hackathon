@@ -12,11 +12,12 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+from typing import Dict, List, Optional
 
-GRUPOS: list[str] = ["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4"]
+GRUPOS: List[str] = ["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4"]
 
 # SHA-256 (hex) del texto normalizado de la clave asignada a cada grupo.
-_CLAVES_HASH: dict[str, str] = {
+_CLAVES_HASH: Dict[str, str] = {
     "Grupo 1": "388c2eafe5afd475492698c0995a2daf157eb3b3be8207391d3a023c97c8c034",
     "Grupo 2": "23c657f2efda7731a3c1990b25f318fa2eb1332208f97ab9cc2a7eac70ab5a76",
     "Grupo 3": "74de057f768beb42de17ffc4b8a56100f0bed85947ecacaef111e3d3ec997950",
@@ -34,7 +35,7 @@ def _h(texto: str) -> str:
     return hashlib.sha256(_normalizar(texto).encode("utf-8")).hexdigest()
 
 
-def verificar_clave(grupo: str | None, clave: str | None) -> bool:
+def verificar_clave(grupo: Optional[str], clave: Optional[str]) -> bool:
     """True si la clave del grupo coincide con el hash almacenado."""
     if not grupo or clave is None or not clave.strip():
         return False
@@ -44,7 +45,7 @@ def verificar_clave(grupo: str | None, clave: str | None) -> bool:
     return _h(clave) == esperado
 
 
-def descifrar_claves(num_digitos: int = 3) -> dict[str, str]:
+def descifrar_claves(num_digitos: int = 3) -> Dict[str, str]:
     """Recupera las claves de cada grupo via brute-force contra los hashes.
 
     Solo se llama cuando el usuario gana el ejercicio Hack. Mantiene las
@@ -54,7 +55,7 @@ def descifrar_claves(num_digitos: int = 3) -> dict[str, str]:
     if num_digitos < 1 or num_digitos > 6:
         raise ValueError("num_digitos debe estar entre 1 y 6")
     hash_a_grupo = {h: g for g, h in _CLAVES_HASH.items()}
-    descifradas: dict[str, str] = {}
+    descifradas: Dict[str, str] = {}
     for n in range(10**num_digitos):
         candidato = str(n).zfill(num_digitos)
         h = _h(candidato)

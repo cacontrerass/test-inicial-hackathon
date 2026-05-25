@@ -22,16 +22,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import re
-from typing import TypedDict
+from typing import Any, Dict, List, Optional
 
-
-class Pregunta(TypedDict, total=False):
-    id: str
-    enunciado: str
-    formato: str
-    hash_correcto: str
-    imagen: str
-    imagen_caption: str
+Pregunta = Dict[str, Any]
 
 
 def normalizar(texto: str) -> str:
@@ -44,7 +37,7 @@ def _h(texto: str) -> str:
     return hashlib.sha256(normalizar(texto).encode("utf-8")).hexdigest()
 
 
-PREGUNTAS: list[Pregunta] = [
+PREGUNTAS: List[Pregunta] = [
     {
         "id": "q1",
         "enunciado": (
@@ -106,7 +99,7 @@ PREGUNTA_HACK: Pregunta = {
 }
 
 
-def verificar_hack(texto_respuesta: str | None) -> bool:
+def verificar_hack(texto_respuesta: Optional[str]) -> bool:
     """True si la respuesta del Hack coincide (por hash) con la correcta."""
     if texto_respuesta is None or not texto_respuesta.strip():
         return False
@@ -121,7 +114,7 @@ def get_pregunta(qid: str) -> Pregunta:
     raise KeyError(f"Pregunta no encontrada: {qid}")
 
 
-def verificar(qid: str, texto_respuesta: str | None) -> bool:
+def verificar(qid: str, texto_respuesta: Optional[str]) -> bool:
     """True si la respuesta normalizada coincide (por hash) con la correcta."""
     if texto_respuesta is None or not texto_respuesta.strip():
         return False
