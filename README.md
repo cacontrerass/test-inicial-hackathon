@@ -3,8 +3,9 @@
 > **App en producción:** <https://techchampions-test-inicial-hackathon.streamlit.app/>
 
 App **Streamlit** para el reto inicial del hackathon. El usuario selecciona su
-grupo, responde 3 preguntas **escribiendo la respuesta en una caja de texto**,
-y por cada respuesta correcta se desbloquea la descarga de un archivo:
+grupo, ingresa la **clave de acceso de 3 dígitos** asignada por el organizador,
+responde 3 preguntas **escribiendo la respuesta en una caja de texto**, y por
+cada respuesta correcta se desbloquea la descarga de un archivo:
 
 - **Pregunta 1 correcta** → `archivos/caso_de_negocio.zip` (común a todos los grupos).
 - **Pregunta 2 correcta** → `archivos/{N}_p2.zip` (depende del grupo: `1_p2.zip` a `4_p2.zip`).
@@ -25,6 +26,7 @@ y por cada respuesta correcta se desbloquea la descarga de un archivo:
 .
 ├── app.py                  # App principal de Streamlit
 ├── preguntas.py            # Preguntas, opciones y hashes de respuestas
+├── grupos.py               # Claves de acceso por grupo (SHA-256)
 ├── requirements.txt
 ├── .gitignore
 ├── README.md
@@ -83,7 +85,21 @@ archivos reales **manteniendo exactamente los mismos nombres**:
 
 Si algún archivo falta, la app muestra un `st.warning` y no se cae.
 
-### 2) Cambiar el texto de una pregunta o su respuesta correcta
+### 2) Cambiar las claves de acceso por grupo
+
+Las claves de 3 dígitos viven en `grupos.py` también como **SHA-256** (no en
+texto plano). Para rotar una clave:
+
+1. Genera el nuevo hash con la utilidad:
+   ```bash
+   python grupos.py --hash "999"
+   ```
+2. Pega el hash resultante en el campo correspondiente del diccionario
+   `_CLAVES_HASH` dentro de `grupos.py`.
+3. Comunica la nueva clave al grupo correspondiente fuera del repo (Slack,
+   correo, etc.). **Nunca** dejes la clave en texto plano en el código.
+
+### 3) Cambiar el texto de una pregunta o su respuesta correcta
 
 Cada pregunta vive en `preguntas.py` con los campos `enunciado`, `formato`
 (placeholder/ayuda) y `hash_correcto` (SHA-256 del texto normalizado de la

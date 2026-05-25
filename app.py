@@ -11,12 +11,11 @@ from pathlib import Path
 
 import streamlit as st
 
+from grupos import GRUPOS, verificar_clave
 from preguntas import PREGUNTAS, verificar
 
 BASE_DIR = Path(__file__).parent
 ARCHIVOS_DIR = BASE_DIR / "archivos"
-
-GRUPOS = ["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4"]
 
 CSS_TIPOGRAFIA = """
 <style>
@@ -240,6 +239,8 @@ def _reiniciar_progreso() -> None:
     st.session_state.ok = {"q1": False, "q2": False, "q3": False}
     for qid in ("q1", "q2", "q3"):
         st.session_state.pop(f"input_{qid}", None)
+    st.session_state.pop("input_clave", None)
+    st.session_state.pop("radio_grupo", None)
 
 
 def main() -> None:
@@ -256,22 +257,40 @@ def main() -> None:
     st.divider()
 
     if not st.session_state.grupo_confirmado:
-        st.subheader("Paso 0 · Selecciona tu grupo")
+        st.subheader("Paso 0 · Selecciona tu grupo e ingresa tu clave")
         grupo = st.radio(
             "Grupo:",
             options=GRUPOS,
             index=None,
             key="radio_grupo",
         )
+        clave = st.text_input(
+            "Clave de acceso (3 dígitos):",
+            value="",
+            max_chars=3,
+            placeholder="Ej.: 123",
+            key="input_clave",
+            help="Solicita la clave de tu grupo al organizador.",
+        )
         confirmar = st.button("Confirmar grupo", type="primary")
         if confirmar:
             if grupo is None:
-                st.warning("Selecciona un grupo antes de confirmar.")
+                st.warning("Selecciona un grupo antes de continuar.")
+            elif not clave or not clave.strip():
+                st.warning("Ingresa la clave de acceso de tu grupo.")
+            elif not verificar_clave(grupo, clave):
+                st.error(
+                    "❌ Clave incorrecta. Verifica con el organizador "
+                    "la clave asignada a tu grupo e inténtalo de nuevo."
+                )
             else:
                 st.session_state.grupo = grupo
                 st.session_state.grupo_confirmado = True
                 st.rerun()
-        st.info("Hasta confirmar el grupo no se mostrarán las preguntas.")
+        st.info(
+            "Para avanzar al Test Inicial debes seleccionar tu grupo "
+            "e ingresar la clave correcta."
+        )
         return
 
     cols = st.columns([3, 1])
