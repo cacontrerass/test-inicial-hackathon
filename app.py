@@ -143,15 +143,19 @@ def _inyectar_css() -> None:
 def _archivo_para(qid: str, grupo: str | None) -> tuple[Path, str, str]:
     """Devuelve (ruta, nombre_descarga, mime) del archivo a entregar."""
     if qid == "q1":
-        return ARCHIVOS_DIR / "comun_p1.zip", "comun_p1.zip", "application/zip"
+        return (
+            ARCHIVOS_DIR / "caso_de_negocio.zip",
+            "caso_de_negocio.zip",
+            "application/zip",
+        )
     if qid == "q2":
         n = re.search(r"\d+", grupo or "").group(0) if grupo else "1"
-        nombre = f"grupo{n}_p2.zip"
+        nombre = f"{n}_p2.zip"
         return ARCHIVOS_DIR / nombre, nombre, "application/zip"
     if qid == "q3":
         return (
-            ARCHIVOS_DIR / "caso_de_negocio.pdf",
-            "caso_de_negocio.pdf",
+            ARCHIVOS_DIR / "mapa_de_archivos.pdf",
+            "mapa_de_archivos.pdf",
             "application/pdf",
         )
     raise ValueError(f"qid desconocido: {qid}")

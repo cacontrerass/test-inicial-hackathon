@@ -4,9 +4,9 @@ App **Streamlit** para el reto inicial del hackathon. El usuario selecciona su
 grupo, responde 3 preguntas **escribiendo la respuesta en una caja de texto**,
 y por cada respuesta correcta se desbloquea la descarga de un archivo:
 
-- **Pregunta 1 correcta** → `archivos/comun_p1.zip` (común a todos los grupos).
-- **Pregunta 2 correcta** → `archivos/grupo{N}_p2.zip` (depende del grupo).
-- **Pregunta 3 correcta** → `archivos/caso_de_negocio.pdf` (común a todos).
+- **Pregunta 1 correcta** → `archivos/caso_de_negocio.zip` (común a todos los grupos).
+- **Pregunta 2 correcta** → `archivos/{N}_p2.zip` (depende del grupo: `1_p2.zip` a `4_p2.zip`).
+- **Pregunta 3 correcta** → `archivos/mapa_de_archivos.pdf` (común a todos).
 
 > Las respuestas correctas **no** se almacenan en texto plano: sólo se guarda
 > el `SHA-256` del texto **normalizado** de la respuesta correcta (ver
@@ -28,12 +28,12 @@ y por cada respuesta correcta se desbloquea la descarga de un archivo:
 ├── README.md
 ├── .streamlit/config.toml  # Tema y configuración
 └── archivos/               # Archivos descargables (placeholders incluidos)
-    ├── comun_p1.zip
-    ├── grupo1_p2.zip
-    ├── grupo2_p2.zip
-    ├── grupo3_p2.zip
-    ├── grupo4_p2.zip
-    └── caso_de_negocio.pdf
+    ├── caso_de_negocio.zip
+    ├── 1_p2.zip
+    ├── 2_p2.zip
+    ├── 3_p2.zip
+    ├── 4_p2.zip
+    └── mapa_de_archivos.pdf
 ```
 
 ---
@@ -75,9 +75,9 @@ Los 6 archivos en `archivos/` son **placeholders válidos** (zips con un
 `README.txt` interno y un PDF mínimo). Antes del evento, reemplázalos por los
 archivos reales **manteniendo exactamente los mismos nombres**:
 
-- `comun_p1.zip`
-- `grupo1_p2.zip`, `grupo2_p2.zip`, `grupo3_p2.zip`, `grupo4_p2.zip`
-- `caso_de_negocio.pdf`
+- `caso_de_negocio.zip` (P1, común)
+- `1_p2.zip`, `2_p2.zip`, `3_p2.zip`, `4_p2.zip` (P2, uno por grupo)
+- `mapa_de_archivos.pdf` (P3, común)
 
 Si algún archivo falta, la app muestra un `st.warning` y no se cae.
 
