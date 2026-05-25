@@ -25,11 +25,13 @@ import re
 from typing import TypedDict
 
 
-class Pregunta(TypedDict):
+class Pregunta(TypedDict, total=False):
     id: str
     enunciado: str
     formato: str
     hash_correcto: str
+    imagen: str
+    imagen_caption: str
 
 
 def normalizar(texto: str) -> str:
@@ -61,6 +63,8 @@ PREGUNTAS: list[Pregunta] = [
             "KIA con más ventas en el segmento híbrido en el rango:\n\n"
             "[Fecha] >= 01.01.2024 y [Fecha] < (Var)"
         ),
+        "imagen": "assets/pregunta2_var.png",
+        "imagen_caption": "Ejecuta este código en Python para resolver el valor de (Var).",
         "formato": "Ej.: 8",
         "hash_correcto": (
             "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8"

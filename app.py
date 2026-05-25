@@ -13,7 +13,8 @@ import streamlit as st
 
 from preguntas import PREGUNTAS, verificar
 
-ARCHIVOS_DIR = Path(__file__).parent / "archivos"
+BASE_DIR = Path(__file__).parent
+ARCHIVOS_DIR = BASE_DIR / "archivos"
 
 GRUPOS = ["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4"]
 
@@ -65,6 +66,19 @@ def _render_pregunta(idx: int, pregunta: dict) -> None:
     qid = pregunta["id"]
     st.markdown(f"### Pregunta {idx}")
     st.write(pregunta["enunciado"])
+
+    imagen_rel = pregunta.get("imagen")
+    if imagen_rel:
+        imagen_path = BASE_DIR / imagen_rel
+        if imagen_path.exists():
+            st.image(
+                str(imagen_path),
+                caption=pregunta.get("imagen_caption"),
+                use_container_width=True,
+            )
+        else:
+            st.warning(f"⚠️ Falta la imagen `{imagen_rel}` en el proyecto.")
+
     formato = pregunta.get("formato", "")
     if formato:
         st.caption(f"Formato esperado · {formato}")
