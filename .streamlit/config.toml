@@ -7,3 +7,10 @@ font = "sans serif"
 
 [server]
 maxUploadSize = 50
+
+# Oculta el menu hamburguesa (... arriba a la derecha), que en Cloud
+# incluye el link "View source" al repo de GitHub. Tambien quita el
+# boton "Deploy" en modo local.
+[client]
+toolbarMode = "minimal"
+showErrorDetails = false

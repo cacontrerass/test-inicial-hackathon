@@ -20,6 +20,19 @@ LOGO_TECH_CHAMPIONS = BASE_DIR / "Iconos_logos" / "Logo Tech Champions - LETRAS 
 
 CSS_TIPOGRAFIA = """
 <style>
+/* Ocultar elementos de Streamlit que exponen el repo o la plataforma:
+   - menu hamburguesa (... arriba a la derecha) con "View source" al repo
+   - footer "Made with Streamlit"
+   - badge de "Hosted with Streamlit" en algunas versiones
+   Combinado con [client] toolbarMode="minimal" en .streamlit/config.toml. */
+#MainMenu, header [data-testid="stMainMenu"] { visibility: hidden !important; }
+footer, [data-testid="stFooter"] { visibility: hidden !important; height: 0 !important; }
+[data-testid="stDecoration"] { display: none !important; }
+[data-testid="stToolbar"] { visibility: hidden !important; }
+.viewerBadge_container__1QSob,
+.viewerBadge_link__1S137,
+[class*="viewerBadge_"] { display: none !important; }
+
 :root {
     --btn-azul: #1F6FEB;
     --btn-azul-hover: #1B5FCC;
