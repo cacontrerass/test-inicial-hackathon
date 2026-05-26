@@ -449,8 +449,8 @@ def main() -> None:
     if all(st.session_state.ok.values()):
         st.balloons()
         st.success(
-            "🎉 ¡Felicitaciones! Has desbloqueado los 3 archivos. "
-            "Ya tienes todo lo necesario para iniciar el caso de negocio."
+            "🎉¡Felicitaciones! Has completado los tres puntos. "
+            "Construye el modelo de datos para seguir avanzando."
         )
 
     st.divider()
